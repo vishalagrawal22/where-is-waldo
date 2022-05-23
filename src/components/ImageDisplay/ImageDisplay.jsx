@@ -1,7 +1,9 @@
 import PropType from "prop-types";
 import React, { useState } from "react";
 import CharacterMenu from "../CharacterMenu";
-import styles from "./ImageDisplay.module.css";
+import TargetCircle from "../TargetCircle";
+
+export const CHARACTER_SELECT_CIRCLE_RADIUS = 20;
 
 function ImageDisplay({ game, onChooseCharacter }) {
   const [dropdownLocation, setDropdownLocation] = useState(null);
@@ -22,19 +24,16 @@ function ImageDisplay({ game, onChooseCharacter }) {
       <img src={game.image.URL} alt={game.image.name} onClick={handleClick} />
       {dropdownLocation && (
         <>
-          <div
-            data-testid="target-box"
-            className={styles["target-box"]}
-            style={{
-              position: "absolute",
-              left: dropdownLocation.x - 20,
-              top: dropdownLocation.y - 20,
-            }}></div>
+          <TargetCircle
+            left={dropdownLocation.x}
+            top={dropdownLocation.y}
+            radius={CHARACTER_SELECT_CIRCLE_RADIUS}
+          />
           <div
             style={{
               position: "absolute",
-              left: dropdownLocation.x + 20,
-              top: dropdownLocation.y + 20,
+              left: dropdownLocation.x + CHARACTER_SELECT_CIRCLE_RADIUS,
+              top: dropdownLocation.y + CHARACTER_SELECT_CIRCLE_RADIUS,
             }}
             data-testid="dropdown">
             <CharacterMenu

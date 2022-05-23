@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import GameFactory from "../../data/game.factory";
-import ImageDisplay from "./ImageDisplay";
+import ImageDisplay, { CHARACTER_SELECT_CIRCLE_RADIUS } from "./ImageDisplay";
 import CharacterFactory from "../../data/character.factory";
 
 describe("ImageDisplay", () => {
@@ -25,8 +25,10 @@ describe("ImageDisplay", () => {
 
     const dropdown = screen.getByTestId("dropdown");
     expect(dropdown).toBeInTheDocument();
-    expect(dropdown.style.left).toBe("60px");
-    expect(dropdown.style.top).toBe("70px");
+    expect(dropdown.style.left).toBe(
+      `${40 + CHARACTER_SELECT_CIRCLE_RADIUS}px`
+    );
+    expect(dropdown.style.top).toBe(`${50 + CHARACTER_SELECT_CIRCLE_RADIUS}px`);
   });
 
   it("renders the target box on clicking the image", () => {
@@ -39,10 +41,14 @@ describe("ImageDisplay", () => {
       clientY: 50,
     });
 
-    const targetBox = screen.getByTestId("target-box");
-    expect(targetBox).toBeInTheDocument();
-    expect(targetBox.style.left).toBe("20px");
-    expect(targetBox.style.top).toBe("30px");
+    const targetCircle = screen.getByTestId("target-circle");
+    expect(targetCircle).toBeInTheDocument();
+    expect(targetCircle.style.left).toBe(
+      `${40 - CHARACTER_SELECT_CIRCLE_RADIUS}px`
+    );
+    expect(targetCircle.style.top).toBe(
+      `${50 - CHARACTER_SELECT_CIRCLE_RADIUS}px`
+    );
   });
 
   it("relocates the dropbox on reclicking the image", () => {
@@ -62,8 +68,10 @@ describe("ImageDisplay", () => {
 
     const dropdown = screen.getByTestId("dropdown");
     expect(dropdown).toBeInTheDocument();
-    expect(dropdown.style.left).toBe("95px");
-    expect(dropdown.style.top).toBe("65px");
+    expect(dropdown.style.left).toBe(
+      `${75 + CHARACTER_SELECT_CIRCLE_RADIUS}px`
+    );
+    expect(dropdown.style.top).toBe(`${45 + CHARACTER_SELECT_CIRCLE_RADIUS}px`);
   });
 
   it("relocates the target box on reclicking the image", () => {
@@ -81,10 +89,14 @@ describe("ImageDisplay", () => {
       clientY: 45,
     });
 
-    const dropdown = screen.getByTestId("target-box");
-    expect(dropdown).toBeInTheDocument();
-    expect(dropdown.style.left).toBe("55px");
-    expect(dropdown.style.top).toBe("25px");
+    const targetCircle = screen.getByTestId("target-circle");
+    expect(targetCircle).toBeInTheDocument();
+    expect(targetCircle.style.left).toBe(
+      `${75 - CHARACTER_SELECT_CIRCLE_RADIUS}px`
+    );
+    expect(targetCircle.style.top).toBe(
+      `${45 - CHARACTER_SELECT_CIRCLE_RADIUS}px`
+    );
   });
 
   describe("when character is clicked", () => {
@@ -118,8 +130,8 @@ describe("ImageDisplay", () => {
       const character = screen.getByText("Waldo");
       fireEvent.click(character);
 
-      const targetBox = screen.queryByTestId("target-box");
-      expect(targetBox).not.toBeInTheDocument();
+      const targetCircle = screen.queryByTestId("target-circle");
+      expect(targetCircle).not.toBeInTheDocument();
     });
 
     it("calls onChooseCharacter", () => {
