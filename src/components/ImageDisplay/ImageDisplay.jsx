@@ -23,6 +23,7 @@ function ImageDisplay({ game, onChooseCharacter }) {
       {dropdownLocation && (
         <>
           <div
+            data-testid="target-box"
             className={styles["target-box"]}
             style={{
               position: "absolute",

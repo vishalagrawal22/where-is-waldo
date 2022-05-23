@@ -29,6 +29,22 @@ describe("ImageDisplay", () => {
     expect(dropdown.style.top).toBe("70px");
   });
 
+  it("renders the target box on clicking the image", () => {
+    const game = GameFactory(null, "game1", null, []);
+    render(<ImageDisplay game={game} />);
+
+    const image = screen.getByAltText("game1");
+    fireEvent.click(image, {
+      clientX: 40,
+      clientY: 50,
+    });
+
+    const targetBox = screen.getByTestId("target-box");
+    expect(targetBox).toBeInTheDocument();
+    expect(targetBox.style.left).toBe("20px");
+    expect(targetBox.style.top).toBe("30px");
+  });
+
   describe("when character is clicked", () => {
     it("closes dropdown", () => {
       const game = GameFactory(null, "game1", null, [
@@ -45,6 +61,23 @@ describe("ImageDisplay", () => {
 
       const dropdown = screen.queryByTestId("dropdown");
       expect(dropdown).not.toBeInTheDocument();
+    });
+
+    it("removes the target box", () => {
+      const game = GameFactory(null, "game1", null, [
+        CharacterFactory(1, "Waldo"),
+        CharacterFactory(2, "Wizard"),
+      ]);
+      render(<ImageDisplay game={game} />);
+
+      const image = screen.getByAltText("game1");
+      fireEvent.click(image);
+
+      const character = screen.getByText("Waldo");
+      fireEvent.click(character);
+
+      const targetBox = screen.queryByTestId("target-box");
+      expect(targetBox).not.toBeInTheDocument();
     });
 
     it("calls onChooseCharacter", () => {
