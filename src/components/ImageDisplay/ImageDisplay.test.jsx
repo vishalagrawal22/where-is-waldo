@@ -45,6 +45,48 @@ describe("ImageDisplay", () => {
     expect(targetBox.style.top).toBe("30px");
   });
 
+  it("relocates the dropbox on reclicking the image", () => {
+    const game = GameFactory(null, "game1", null, []);
+    render(<ImageDisplay game={game} />);
+
+    const image = screen.getByAltText("game1");
+    fireEvent.click(image, {
+      clientX: 40,
+      clientY: 50,
+    });
+
+    fireEvent.click(image, {
+      clientX: 75,
+      clientY: 45,
+    });
+
+    const dropdown = screen.getByTestId("dropdown");
+    expect(dropdown).toBeInTheDocument();
+    expect(dropdown.style.left).toBe("95px");
+    expect(dropdown.style.top).toBe("65px");
+  });
+
+  it("relocates the target box on reclicking the image", () => {
+    const game = GameFactory(null, "game1", null, []);
+    render(<ImageDisplay game={game} />);
+
+    const image = screen.getByAltText("game1");
+    fireEvent.click(image, {
+      clientX: 40,
+      clientY: 50,
+    });
+
+    fireEvent.click(image, {
+      clientX: 75,
+      clientY: 45,
+    });
+
+    const dropdown = screen.getByTestId("target-box");
+    expect(dropdown).toBeInTheDocument();
+    expect(dropdown.style.left).toBe("55px");
+    expect(dropdown.style.top).toBe("25px");
+  });
+
   describe("when character is clicked", () => {
     it("closes dropdown", () => {
       const game = GameFactory(null, "game1", null, [
