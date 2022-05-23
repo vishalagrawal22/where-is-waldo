@@ -170,7 +170,10 @@ describe("ImageDisplay", () => {
       const character = screen.getByText("Wizard");
       fireEvent.click(character);
 
-      expect(onChooseCharacter).toBeCalledWith({ x: 40, y: 50 }, 2);
+      expect(onChooseCharacter).toBeCalledWith(
+        { radius: CHARACTER_SELECT_CIRCLE_RADIUS, x: 40, y: 50 },
+        2
+      );
     });
   });
 });

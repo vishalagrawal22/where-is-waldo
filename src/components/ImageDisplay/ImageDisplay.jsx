@@ -16,7 +16,10 @@ function ImageDisplay({ game, onChooseCharacter }) {
 
   function handleCharacterSelect(characterId) {
     setDropdownLocation(null);
-    onChooseCharacter(dropdownLocation, characterId);
+    onChooseCharacter(
+      { ...dropdownLocation, radius: CHARACTER_SELECT_CIRCLE_RADIUS },
+      characterId
+    );
   }
 
   return (
