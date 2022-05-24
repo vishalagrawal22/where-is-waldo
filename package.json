@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "emulators": "firebase emulators:start --import=./firebase-emulator-data --export-on-exit"
   },
   "dependencies": {
     "firebase": "^9.8.1",
