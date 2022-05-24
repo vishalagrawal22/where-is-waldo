@@ -1,0 +1,19 @@
+.grey {
+  filter: grayscale(100%);
+}
+
+.card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card img {
+  width: 150px;
+  height: 150px;
+}
+
+.card span {
+  margin: 8px 0px;
+  font-size: 24px;
+}
