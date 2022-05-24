@@ -3,6 +3,19 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import GameFactory from "../../data/game.factory";
 import ImageDisplay, { CHARACTER_SELECT_CIRCLE_RADIUS } from "./ImageDisplay";
 import CharacterFactory from "../../data/character.factory";
+import { getBoundingClientRect } from "../../helpers/dom";
+
+jest.mock("../../helpers/dom", () => {
+  return {
+    ...jest.requireActual("../../helpers/dom"),
+    getBoundingClientRect: jest.fn(() => ({
+      left: 0,
+      top: 0,
+      height: 650,
+      width: 900,
+    })),
+  };
+});
 
 describe("ImageDisplay", () => {
   it("renders the provided image correctly", () => {
@@ -108,7 +121,10 @@ describe("ImageDisplay", () => {
       render(<ImageDisplay game={game} />);
 
       const image = screen.getByAltText("game1");
-      fireEvent.click(image);
+      fireEvent.click(image, {
+        clientX: CHARACTER_SELECT_CIRCLE_RADIUS,
+        clientY: CHARACTER_SELECT_CIRCLE_RADIUS,
+      });
 
       const character = screen.getByText("Waldo");
       fireEvent.click(character);
@@ -125,7 +141,10 @@ describe("ImageDisplay", () => {
       render(<ImageDisplay game={game} />);
 
       const image = screen.getByAltText("game1");
-      fireEvent.click(image);
+      fireEvent.click(image, {
+        clientX: CHARACTER_SELECT_CIRCLE_RADIUS,
+        clientY: CHARACTER_SELECT_CIRCLE_RADIUS,
+      });
 
       const character = screen.getByText("Waldo");
       fireEvent.click(character);
@@ -145,7 +164,10 @@ describe("ImageDisplay", () => {
       );
 
       const image = screen.getByAltText("game1");
-      fireEvent.click(image);
+      fireEvent.click(image, {
+        clientX: CHARACTER_SELECT_CIRCLE_RADIUS,
+        clientY: CHARACTER_SELECT_CIRCLE_RADIUS,
+      });
       const character = screen.getByText("Wizard");
       fireEvent.click(character);
 
@@ -173,6 +195,60 @@ describe("ImageDisplay", () => {
       expect(onChooseCharacter).toBeCalledWith(
         { radius: CHARACTER_SELECT_CIRCLE_RADIUS, x: 40, y: 50 },
         2
+      );
+    });
+  });
+
+  describe("when the image is not located at the top corner", () => {
+    it("renders the dropbox on clicking the image", () => {
+      getBoundingClientRect.mockReturnValueOnce({
+        left: 100,
+        top: 200,
+        height: 650,
+        width: 900,
+      });
+      const game = GameFactory(null, "game1", null, []);
+      render(<ImageDisplay game={game} />);
+
+      const image = screen.getByAltText("game1");
+      fireEvent.click(image, {
+        clientX: 150,
+        clientY: 300,
+      });
+
+      const dropdown = screen.getByTestId("dropdown");
+      expect(dropdown).toBeInTheDocument();
+      expect(dropdown.style.left).toBe(
+        `${50 + CHARACTER_SELECT_CIRCLE_RADIUS}px`
+      );
+      expect(dropdown.style.top).toBe(
+        `${100 + CHARACTER_SELECT_CIRCLE_RADIUS}px`
+      );
+    });
+
+    it("renders the target box on clicking the image", () => {
+      getBoundingClientRect.mockReturnValueOnce({
+        left: 100,
+        top: 200,
+        height: 650,
+        width: 900,
+      });
+      const game = GameFactory(null, "game1", null, []);
+      render(<ImageDisplay game={game} />);
+
+      const image = screen.getByAltText("game1");
+      fireEvent.click(image, {
+        clientX: 200,
+        clientY: 400,
+      });
+
+      const targetCircle = screen.getByTestId("target-circle");
+      expect(targetCircle).toBeInTheDocument();
+      expect(targetCircle.style.left).toBe(
+        `${100 - CHARACTER_SELECT_CIRCLE_RADIUS}px`
+      );
+      expect(targetCircle.style.top).toBe(
+        `${200 - CHARACTER_SELECT_CIRCLE_RADIUS}px`
       );
     });
   });
