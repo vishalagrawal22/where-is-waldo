@@ -5,7 +5,7 @@ import CharacterMenu from "../CharacterMenu";
 import TargetCircle from "../TargetCircle";
 import { getBoundingClientRect } from "../../helpers/dom";
 
-export const CHARACTER_SELECT_CIRCLE_RADIUS = 20;
+export const CHARACTER_SELECT_CIRCLE_RADIUS = 15;
 
 function ImageDisplay({ game, onChooseCharacter }) {
   const [dropdownLocation, setDropdownLocation] = useState(null);
