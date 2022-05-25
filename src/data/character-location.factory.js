@@ -1,5 +1,5 @@
-function CharacterLocationFactory(x, y, radius) {
-  return { x, y, radius };
+function CharacterLocationFactory(x, y) {
+  return { x, y };
 }
 
 export default CharacterLocationFactory;

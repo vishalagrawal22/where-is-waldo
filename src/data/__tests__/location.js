@@ -16,7 +16,7 @@ jest.mock("firebase/firestore", () => {
     }),
     getDoc: jest.fn(() => ({
       data: () => {
-        return { x: -1, y: -1, radius: -1 };
+        return { x: -1, y: -1 };
       },
     })),
   };
@@ -41,7 +41,7 @@ describe("getCharacterLocation", () => {
     getDoc.mockImplementationOnce(() => {
       return {
         data: () => {
-          return { x: 10, y: 15, radius: 40 };
+          return { x: 10, y: 15 };
         },
       };
     });
@@ -52,7 +52,6 @@ describe("getCharacterLocation", () => {
     expect(location).toEqual({
       x: 10,
       y: 15,
-      radius: 40,
     });
   });
 });
