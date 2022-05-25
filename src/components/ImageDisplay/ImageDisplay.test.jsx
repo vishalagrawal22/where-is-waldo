@@ -260,4 +260,34 @@ describe("ImageDisplay", () => {
       );
     });
   });
+
+  describe("when clicked at corner", () => {
+    it("does not renders the dropbox on clicking the image", () => {
+      const game = GameFactory(null, "game1", null, []);
+      render(<ImageDisplay game={game} />);
+
+      const image = screen.getByAltText("game1");
+      fireEvent.click(image, {
+        clientX: 10,
+        clientY: 10,
+      });
+
+      const dropdown = screen.queryByTestId("dropdown");
+      expect(dropdown).not.toBeInTheDocument();
+    });
+
+    it("does not renders the target box on clicking the image", () => {
+      const game = GameFactory(null, "game1", null, []);
+      render(<ImageDisplay game={game} />);
+
+      const image = screen.getByAltText("game1");
+      fireEvent.click(image, {
+        clientX: 10,
+        clientY: 10,
+      });
+
+      const targetCircle = screen.queryByTestId("target-circle");
+      expect(targetCircle).not.toBeInTheDocument();
+    });
+  });
 });
