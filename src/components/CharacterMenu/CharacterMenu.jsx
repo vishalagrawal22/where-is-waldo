@@ -20,14 +20,9 @@ function CharacterMenu({ characters, onCharacterSelect }) {
   );
 }
 
-const empty = () => {};
-CharacterMenu.defaultProps = {
-  onCharacterSelect: empty,
-};
-
 CharacterMenu.propTypes = {
   characters: PropTypes.array.isRequired,
-  onCharacterSelect: PropTypes.func,
+  onCharacterSelect: PropTypes.func.isRequired,
 };
 
 export default CharacterMenu;

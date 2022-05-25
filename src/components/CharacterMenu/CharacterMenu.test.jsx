@@ -10,7 +10,9 @@ describe("CharacterMenu", () => {
       CharacterFactory(1, "Waldo"),
       CharacterFactory(2, "Wizard"),
     ];
-    render(<CharacterMenu characters={characters} />);
+    render(
+      <CharacterMenu characters={characters} onCharacterSelect={() => {}} />
+    );
 
     expect(screen.getByText("Waldo")).toBeInTheDocument();
     expect(screen.getByText("Wizard")).toBeInTheDocument();
