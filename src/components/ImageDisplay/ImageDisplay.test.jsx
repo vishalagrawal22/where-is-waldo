@@ -174,7 +174,7 @@ describe("ImageDisplay", () => {
       expect(onChooseCharacter).toBeCalledTimes(1);
     });
 
-    it("calls onChooseCharacter with correct location and character id", () => {
+    it("calls onChooseCharacter with correct location, dimensions and character id", () => {
       const game = GameFactory(null, "game1", null, [
         CharacterFactory(1, "Waldo"),
         CharacterFactory(2, "Wizard"),
@@ -193,7 +193,15 @@ describe("ImageDisplay", () => {
       fireEvent.click(character);
 
       expect(onChooseCharacter).toBeCalledWith(
-        { radius: CHARACTER_SELECT_CIRCLE_RADIUS, x: 40, y: 50 },
+        {
+          x: 40,
+          y: 50,
+          radius: CHARACTER_SELECT_CIRCLE_RADIUS,
+        },
+        {
+          height: 650,
+          width: 900,
+        },
         2
       );
     });

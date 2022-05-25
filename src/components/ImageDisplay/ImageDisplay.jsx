@@ -5,10 +5,11 @@ import CharacterMenu from "../CharacterMenu";
 import TargetCircle from "../TargetCircle";
 import { getBoundingClientRect } from "../../helpers/dom";
 
-export const CHARACTER_SELECT_CIRCLE_RADIUS = 15;
+export const CHARACTER_SELECT_CIRCLE_RADIUS = 20;
 
 function ImageDisplay({ game, onChooseCharacter }) {
-  const [dropdownLocation, setDropdownLocation] = useState(null);
+  const [mouseClickLocation, setMouseClickLocation] = useState(null);
+  const [boxDimensions, setBoxDimensions] = useState(null);
   function handleClick(event) {
     const rect = getBoundingClientRect(event);
     const x = event.clientX - Math.floor(rect.left);
@@ -28,17 +29,22 @@ function ImageDisplay({ game, onChooseCharacter }) {
       check(x, y + CHARACTER_SELECT_CIRCLE_RADIUS) &&
       check(x, y - CHARACTER_SELECT_CIRCLE_RADIUS)
     ) {
-      setDropdownLocation({
+      setMouseClickLocation({
         x,
         y,
+      });
+      setBoxDimensions({
+        width: rect.width,
+        height: rect.height,
       });
     }
   }
 
   function handleCharacterSelect(characterId) {
-    setDropdownLocation(null);
+    setMouseClickLocation(null);
     onChooseCharacter(
-      { ...dropdownLocation, radius: CHARACTER_SELECT_CIRCLE_RADIUS },
+      { ...mouseClickLocation, radius: CHARACTER_SELECT_CIRCLE_RADIUS },
+      { ...boxDimensions },
       characterId
     );
   }
@@ -51,18 +57,18 @@ function ImageDisplay({ game, onChooseCharacter }) {
         alt={game.image.name}
         onClick={handleClick}
       />
-      {dropdownLocation && (
+      {mouseClickLocation && (
         <>
           <TargetCircle
-            left={dropdownLocation.x}
-            top={dropdownLocation.y}
+            left={mouseClickLocation.x}
+            top={mouseClickLocation.y}
             radius={CHARACTER_SELECT_CIRCLE_RADIUS}
           />
           <div
             style={{
               position: "absolute",
-              left: dropdownLocation.x + CHARACTER_SELECT_CIRCLE_RADIUS,
-              top: dropdownLocation.y + CHARACTER_SELECT_CIRCLE_RADIUS,
+              left: mouseClickLocation.x + CHARACTER_SELECT_CIRCLE_RADIUS,
+              top: mouseClickLocation.y + CHARACTER_SELECT_CIRCLE_RADIUS,
             }}
             data-testid="dropdown">
             <CharacterMenu
