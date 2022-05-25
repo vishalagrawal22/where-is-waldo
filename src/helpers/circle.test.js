@@ -47,59 +47,44 @@ describe("liesInside", () => {
       y: 5,
       radius: 5,
     };
-    const insideCircle = {
+    const insidePoint = {
       x: 6,
       y: 6,
-      radius: 3,
     };
-    const farAwayCircle = {
+    const outsidePoint = {
       x: 10,
       y: 20,
-      radius: 6,
     };
-    const intersectingCircle = {
-      x: 10,
-      y: 10,
-      radius: 6,
+    const onCirclePoint = {
+      x: 8,
+      y: 9,
     };
-    return { commonCircle, insideCircle, farAwayCircle, intersectingCircle };
+    return { commonCircle, insidePoint, outsidePoint, onCirclePoint };
   }
 
-  it("returns true when one circle lies within another circle", () => {
-    const { commonCircle, insideCircle } = setup();
+  it("returns true when point lies insdie the circle", () => {
+    const { commonCircle, insidePoint } = setup();
 
-    expect(liesInside(commonCircle, insideCircle)).toBe(true);
+    expect(liesInside(commonCircle, insidePoint)).toBe(true);
   });
 
-  it("returns false when circles intersect", () => {
-    const { commonCircle, intersectingCircle } = setup();
+  it("returns true when point lies on the circle", () => {
+    const { commonCircle, onCirclePoint } = setup();
 
-    expect(liesInside(commonCircle, intersectingCircle)).toBe(false);
+    expect(liesInside(commonCircle, onCirclePoint)).toBe(true);
   });
 
-  it("returns false when circles are far away", () => {
-    const { commonCircle, farAwayCircle } = setup();
+  it("returns false when point lies outside the circle", () => {
+    const { commonCircle, outsidePoint } = setup();
 
-    expect(liesInside(commonCircle, farAwayCircle)).toBe(false);
+    expect(liesInside(commonCircle, outsidePoint)).toBe(false);
   });
 
   describe("when order of input is reversed", () => {
-    it("returns true when one circle lies within another circle", () => {
-      const { commonCircle, insideCircle } = setup();
+    it("returns null", () => {
+      const { commonCircle, insidePoint } = setup();
 
-      expect(liesInside(insideCircle, commonCircle)).toBe(true);
-    });
-
-    it("returns false when circles intersect", () => {
-      const { commonCircle, intersectingCircle } = setup();
-
-      expect(liesInside(intersectingCircle, commonCircle)).toBe(false);
-    });
-
-    it("returns false when circles are far away", () => {
-      const { commonCircle, farAwayCircle } = setup();
-
-      expect(liesInside(farAwayCircle, commonCircle)).toBe(false);
+      expect(liesInside(insidePoint, commonCircle)).toBeNull();
     });
   });
 });

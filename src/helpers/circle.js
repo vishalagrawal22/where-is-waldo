@@ -6,19 +6,21 @@ export function getDistance(point1, point2) {
   return Math.sqrt(square(point1.x - point2.x) + square(point1.y - point2.y));
 }
 
-export function liesInside(circle1, circle2) {
+export function liesInside(circle, point) {
+  if (!circle.hasOwnProperty("radius")) {
+    return null;
+  }
+
   const dist = getDistance(
     {
-      x: circle1.x,
-      y: circle1.y,
+      x: circle.x,
+      y: circle.y,
     },
     {
-      x: circle2.x,
-      y: circle2.y,
+      x: point.x,
+      y: point.y,
     }
   );
 
-  const smallerRadius = Math.min(circle1.radius, circle2.radius);
-  const largerRadius = Math.max(circle1.radius, circle2.radius);
-  return smallerRadius + dist <= largerRadius;
+  return dist <= circle.radius;
 }
