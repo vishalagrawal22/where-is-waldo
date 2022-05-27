@@ -1,5 +1,16 @@
+import React from "react";
+
+import "./App.css";
+
+import GameDisplay from "./components/GameDisplay";
+
 function App() {
-  return <div></div>;
+  const gameId = "KT1WWKPRL1nSijN9FdRf";
+  return (
+    <>
+      <GameDisplay gameId={gameId} />
+    </>
+  );
 }
 
 export default App;

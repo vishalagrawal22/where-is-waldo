@@ -1,9 +1,14 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import GameFactory from "../../data/game.factory";
-import ImageDisplay, { CHARACTER_SELECT_CIRCLE_RADIUS } from "./ImageDisplay";
 import CharacterFactory from "../../data/character.factory";
 import { getBoundingClientRect } from "../../helpers/dom";
+
+import ImageDisplay, {
+  CHARACTER_SELECT_CIRCLE_RADIUS,
+  TOAST_DURATION,
+} from "./ImageDisplay";
 
 jest.mock("../../helpers/dom", () => {
   return {
@@ -14,6 +19,19 @@ jest.mock("../../helpers/dom", () => {
       height: 650,
       width: 900,
     })),
+  };
+});
+
+jest.mock("../ToastBox", () => {
+  return {
+    __esModule: true,
+    default: (props) => {
+      const { clearText, ...left } = props;
+      if (clearText) {
+        clearText();
+      }
+      return <div>{JSON.stringify(left)}</div>;
+    },
   };
 });
 
@@ -289,5 +307,31 @@ describe("ImageDisplay", () => {
       const targetCircle = screen.queryByTestId("target-circle");
       expect(targetCircle).not.toBeInTheDocument();
     });
+  });
+
+  it("calls ToastBox with lastGameResult and resetLastGameResult", () => {
+    const game = GameFactory(null, null, null, []);
+    const lastClickResult = {
+      text: "found waldo!",
+      type: "success",
+    };
+    const resetLastClickResult = jest.fn();
+    render(
+      <ImageDisplay
+        game={game}
+        lastClickResult={lastClickResult}
+        resetLastClickResult={resetLastClickResult}
+      />
+    );
+
+    const toastProps = {
+      text: "found waldo!",
+      duration: TOAST_DURATION,
+      textType: "success",
+    };
+
+    const toast = screen.getByText(JSON.stringify(toastProps));
+    expect(toast).toBeInTheDocument();
+    expect(resetLastClickResult).toBeCalled();
   });
 });

@@ -3,11 +3,20 @@ import React, { useState } from "react";
 
 import CharacterMenu from "../CharacterMenu";
 import TargetCircle from "../TargetCircle";
+import ToastBox from "../ToastBox";
 import { getBoundingClientRect } from "../../helpers/dom";
 
-export const CHARACTER_SELECT_CIRCLE_RADIUS = 20;
+import styles from "./ImageDisplay.module.css";
 
-function ImageDisplay({ game, onChooseCharacter }) {
+export const CHARACTER_SELECT_CIRCLE_RADIUS = 20;
+export const TOAST_DURATION = 1000;
+
+function ImageDisplay({
+  game,
+  onChooseCharacter,
+  lastClickResult,
+  resetLastClickResult,
+}) {
   const [mouseClickLocation, setMouseClickLocation] = useState(null);
   const [boxDimensions, setBoxDimensions] = useState(null);
   function handleClick(event) {
@@ -50,34 +59,43 @@ function ImageDisplay({ game, onChooseCharacter }) {
   }
 
   return (
-    <div style={{ position: "relative" }}>
-      <img
-        style={{ width: "100%", height: "100%" }}
-        src={game.image.URL}
-        alt={game.image.name}
-        onClick={handleClick}
+    <div style={{ height: "100%", position: "relative" }}>
+      <ToastBox
+        text={lastClickResult?.text}
+        duration={TOAST_DURATION}
+        textType={lastClickResult?.type}
+        clearText={resetLastClickResult}
       />
-      {mouseClickLocation && (
-        <>
-          <TargetCircle
-            left={mouseClickLocation.x}
-            top={mouseClickLocation.y}
-            radius={CHARACTER_SELECT_CIRCLE_RADIUS}
+      <div className={styles["image-container"]}>
+        <div style={{ position: "relative" }}>
+          <img
+            src={game.image.URL}
+            alt={game.image.name}
+            onClick={handleClick}
           />
-          <div
-            style={{
-              position: "absolute",
-              left: mouseClickLocation.x + CHARACTER_SELECT_CIRCLE_RADIUS,
-              top: mouseClickLocation.y + CHARACTER_SELECT_CIRCLE_RADIUS,
-            }}
-            data-testid="dropdown">
-            <CharacterMenu
-              characters={game.characters}
-              onCharacterSelect={handleCharacterSelect}
-            />
-          </div>
-        </>
-      )}
+          {mouseClickLocation && (
+            <>
+              <TargetCircle
+                left={mouseClickLocation.x}
+                top={mouseClickLocation.y}
+                radius={CHARACTER_SELECT_CIRCLE_RADIUS}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  left: mouseClickLocation.x + CHARACTER_SELECT_CIRCLE_RADIUS,
+                  top: mouseClickLocation.y + CHARACTER_SELECT_CIRCLE_RADIUS,
+                }}
+                data-testid="dropdown">
+                <CharacterMenu
+                  characters={game.characters}
+                  onCharacterSelect={handleCharacterSelect}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
