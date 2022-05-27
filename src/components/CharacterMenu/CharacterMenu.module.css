@@ -16,6 +16,18 @@
   padding: 16px 32px;
 }
 
+.character-item:first-of-type {
+  border-radius: 7px 7px 0 0;
+}
+
+.character-item:last-of-type {
+  border-radius: 0 0 7px 7px;
+}
+
+.character-item:first-of-type:last-of-type {
+  border-radius: 7px;
+}
+
 .character-item:hover {
   cursor: pointer;
   background-color: #1f8190;
