@@ -5,6 +5,7 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
+  runTransaction,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 
@@ -43,4 +44,24 @@ export async function setName(playerId, name) {
 export async function deletePending(gameId, pendingId) {
   const pendingDocRef = doc(db, "games", gameId, "pending", pendingId);
   await deleteDoc(pendingDocRef);
+}
+
+export async function updatePlayerScore(gameId, playerId, pendingId) {
+  try {
+    const score = await computeScore(gameId, pendingId);
+    await deletePending(gameId, pendingId);
+    const name = await getName(playerId);
+    await runTransaction(db, async (transaction) => {
+      const playerScoreDocRef = doc(db, "games", gameId, "scores", playerId);
+      const playerScoreDoc = await transaction.get(playerScoreDocRef);
+      if (!playerScoreDoc.exists() || score < playerScoreDoc.data().score) {
+        transaction.set(playerScoreDocRef, {
+          score,
+          name,
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }

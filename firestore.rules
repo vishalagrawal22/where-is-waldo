@@ -1,6 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /games/{gameId}/scores/{playerId} {
+      allow read, write;
+    }
+    
+    match /players/{playerId} {
+      allow read, write;
+    }
+
     match /games/{gameId}/pending/{pendingId} {
       allow read, write;
     }
