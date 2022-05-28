@@ -1,6 +1,19 @@
-import { addDoc, doc, collection, getDoc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  doc,
+  collection,
+  getDoc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
-import { computeScore, saveStartTime, setName, getName } from "../playerData";
+import {
+  computeScore,
+  saveStartTime,
+  setName,
+  getName,
+  deletePending,
+} from "../playerData";
 
 function setup() {
   const gameId = "game1";
@@ -29,6 +42,7 @@ jest.mock("firebase/firestore", () => {
     })),
     getDoc: jest.fn(),
     setDoc: jest.fn(),
+    deleteDoc: jest.fn(),
   };
 });
 
@@ -152,5 +166,29 @@ describe("getName", () => {
     const { playerId } = setup();
     const name = await getName(playerId);
     expect(name).toBe("Haunted Knight");
+  });
+});
+
+describe("deletePending", () => {
+  it("creates correct doc ref", async () => {
+    const { gameId, pendingDocId } = setup();
+    await deletePending(gameId, pendingDocId);
+
+    expect(doc).toBeCalledWith(
+      "database",
+      "games",
+      gameId,
+      "pending",
+      pendingDocId
+    );
+  });
+
+  it("calls deleteDoc with correct parameters", async () => {
+    const { gameId, pendingDocId } = setup();
+    await deletePending(gameId, pendingDocId);
+
+    expect(deleteDoc).toBeCalledWith(
+      `database/games/${gameId}/pending/${pendingDocId}`
+    );
   });
 });

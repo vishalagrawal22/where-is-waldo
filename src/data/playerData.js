@@ -1,4 +1,11 @@
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../firebase-config";
 
 export async function saveStartTime(gameId, playerId) {
@@ -31,4 +38,9 @@ export async function setName(playerId, name) {
   await setDoc(playerDocRef, {
     name,
   });
+}
+
+export async function deletePending(gameId, pendingId) {
+  const pendingDocRef = doc(db, "games", gameId, "pending", pendingId);
+  await deleteDoc(pendingDocRef);
 }
