@@ -1,12 +1,13 @@
-import { addDoc, doc, collection, getDoc } from "firebase/firestore";
+import { addDoc, doc, collection, getDoc, setDoc } from "firebase/firestore";
 
-import { computeScore, saveStartTime } from "../playerData";
+import { computeScore, saveStartTime, setName, getName } from "../playerData";
 
 function setup() {
   const gameId = "game1";
   const playerId = "player1";
   const pendingDocId = "pending1";
-  return { gameId, playerId, pendingDocId };
+  const name = "Haunted Knight";
+  return { gameId, playerId, pendingDocId, name };
 }
 
 jest.mock("../../firebase-config", () => {
@@ -27,6 +28,7 @@ jest.mock("firebase/firestore", () => {
       id: null,
     })),
     getDoc: jest.fn(),
+    setDoc: jest.fn(),
   };
 });
 
@@ -105,5 +107,50 @@ describe("computeScore", () => {
     const score = await computeScore(gameId, pendingDocId);
 
     expect(score).toBe(correctScore);
+  });
+});
+
+describe("setName", () => {
+  it("creates correct doc ref", async () => {
+    const { playerId } = setup();
+    await setName(playerId);
+    expect(doc).toBeCalledWith("database", "players", playerId);
+  });
+
+  it("calls setDoc with correct parameters", async () => {
+    const { name, playerId } = setup();
+    await setName(playerId, name);
+    expect(setDoc).toBeCalledWith(`database/players/${playerId}`, {
+      name,
+    });
+  });
+});
+
+describe("getName", () => {
+  beforeEach(() => {
+    getDoc.mockReturnValueOnce({
+      id: 15,
+      data: () => ({
+        name: "Haunted Knight",
+      }),
+    });
+  });
+
+  it("creates correct doc ref", async () => {
+    const { playerId } = setup();
+    await getName(playerId);
+    expect(doc).toBeCalledWith("database", "players", playerId);
+  });
+
+  it("calls getDoc with correct parameters", async () => {
+    const { playerId } = setup();
+    await getName(playerId);
+    expect(getDoc).toBeCalledWith(`database/players/${playerId}`);
+  });
+
+  it("returns correct name", async () => {
+    const { playerId } = setup();
+    const name = await getName(playerId);
+    expect(name).toBe("Haunted Knight");
   });
 });
