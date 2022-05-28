@@ -1,6 +1,6 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, doc, collection, getDoc } from "firebase/firestore";
 
-import { saveStartTime } from "../playerData";
+import { computeScore, saveStartTime } from "../playerData";
 
 function setup() {
   const gameId = "game1";
@@ -26,6 +26,7 @@ jest.mock("firebase/firestore", () => {
     addDoc: jest.fn(() => ({
       id: null,
     })),
+    getDoc: jest.fn(),
   };
 });
 
@@ -59,5 +60,50 @@ describe("saveStartTime", () => {
     const returnedId = await saveStartTime(gameId, playerId);
 
     expect(returnedId).toBe(pendingDocId);
+  });
+});
+
+describe("computeScore", () => {
+  beforeEach(() => {
+    const startTime = 1000;
+    getDoc.mockReturnValueOnce({
+      data: () => ({
+        startTime: {
+          toDate: () => startTime,
+        },
+      }),
+    });
+
+    Date.now = jest.fn(() => 6000);
+  });
+
+  it("creates doc ref with correct arguments", async () => {
+    const { gameId, pendingDocId } = setup();
+    await computeScore(gameId, pendingDocId);
+
+    expect(doc).toBeCalledWith(
+      "database",
+      "games",
+      gameId,
+      "pending",
+      pendingDocId
+    );
+  });
+
+  it("calls getDoc with the correct doc ref", async () => {
+    const { gameId, pendingDocId } = setup();
+    await computeScore(gameId, pendingDocId);
+
+    expect(getDoc).toBeCalledWith(
+      `database/games/${gameId}/pending/${pendingDocId}`
+    );
+  });
+
+  it("computers the score correctly", async () => {
+    const { gameId, pendingDocId } = setup();
+    const correctScore = 5000;
+    const score = await computeScore(gameId, pendingDocId);
+
+    expect(score).toBe(correctScore);
   });
 });

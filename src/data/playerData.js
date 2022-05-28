@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 export async function saveStartTime(gameId, playerId) {
@@ -9,4 +9,13 @@ export async function saveStartTime(gameId, playerId) {
     startTime,
   });
   return docRef.id;
+}
+
+export async function computeScore(gameId, pendingId) {
+  const pendingDocRef = doc(db, "games", gameId, "pending", pendingId);
+  const pendingDoc = await getDoc(pendingDocRef);
+  const startTime = pendingDoc.data().startTime.toDate();
+  const currentTime = Date.now();
+  const score = currentTime - startTime;
+  return score;
 }
