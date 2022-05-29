@@ -2,13 +2,12 @@ import React from "react";
 
 import "./App.css";
 
-import GameDisplay from "./components/GameDisplay";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  const gameId = "KT1WWKPRL1nSijN9FdRf";
   return (
     <>
-      <GameDisplay gameId={gameId} />
+      <Outlet />
     </>
   );
 }

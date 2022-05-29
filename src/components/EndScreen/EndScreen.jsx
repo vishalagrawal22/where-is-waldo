@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   computeScore,
@@ -15,6 +16,7 @@ function EndScreen({ gameId, pendingId, player }) {
   const [name, setName] = useState(null);
   const [score, setScore] = useState(null);
   const [formName, setFormName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async function () {
@@ -33,7 +35,9 @@ function EndScreen({ gameId, pendingId, player }) {
     })();
   }, [player]);
 
-  async function handleGoToHome() {}
+  async function handleGoToHome() {
+    navigate(`/`);
+  }
 
   async function handleGoToLeaderboard() {
     const playerName = name || (formName ? formName : null);
@@ -43,6 +47,7 @@ function EndScreen({ gameId, pendingId, player }) {
       }
       await updatePlayerScore(gameId, player.uid, playerName, score);
     }
+    navigate(`/leaderboard/${gameId}`);
   }
 
   return (

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import ImageDisplay from "../ImageDisplay";
 import CharacterCard from "../CharacterCard";
@@ -13,7 +14,8 @@ import { liesInside } from "../../helpers/circle";
 
 import styles from "./GameDisplay.module.css";
 
-function GameDisplay({ gameId }) {
+function GameDisplay() {
+  const { gameId } = useParams();
   const { player } = usePlayer();
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
@@ -34,6 +36,7 @@ function GameDisplay({ gameId }) {
         setIsPending(false);
       } catch (err) {
         setError("unable to fetch data!");
+        setIsPending(false);
       }
     }
 
