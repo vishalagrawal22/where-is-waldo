@@ -1,0 +1,40 @@
+.container {
+  background-color: white;
+  width: 500px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 16px;
+  border-radius: 8px;
+}
+
+.error {
+  color: #e34f5e;
+}
+
+.score {
+  font-size: 24px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.action-buttons button {
+  padding: 16px 32px;
+  border: 0px;
+  border-radius: 8px;
+  color: white;
+}
+
+.primary {
+  background-color: #007bff;
+}
+
+.secondary {
+  background-color: #6c757d;
+}

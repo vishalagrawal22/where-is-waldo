@@ -10,8 +10,8 @@ import {
 import {
   computeScore,
   saveStartTime,
-  setName,
-  getName,
+  savePlayerName,
+  getPlayerDoc,
   deletePending,
 } from "../playerData";
 
@@ -124,48 +124,50 @@ describe("computeScore", () => {
   });
 });
 
-describe("setName", () => {
+describe("savePlayerName", () => {
   it("creates correct doc ref", async () => {
     const { playerId } = setup();
-    await setName(playerId);
+    await savePlayerName(playerId);
     expect(doc).toBeCalledWith("database", "players", playerId);
   });
 
   it("calls setDoc with correct parameters", async () => {
     const { name, playerId } = setup();
-    await setName(playerId, name);
+    await savePlayerName(playerId, name);
     expect(setDoc).toBeCalledWith(`database/players/${playerId}`, {
       name,
     });
   });
 });
 
-describe("getName", () => {
+describe("getPlayerDoc", () => {
+  let returnedDoc;
   beforeEach(() => {
-    getDoc.mockReturnValueOnce({
+    returnedDoc = {
       id: 15,
       data: () => ({
         name: "Haunted Knight",
       }),
-    });
+    };
+    getDoc.mockReturnValueOnce(returnedDoc);
   });
 
   it("creates correct doc ref", async () => {
     const { playerId } = setup();
-    await getName(playerId);
+    await getPlayerDoc(playerId);
     expect(doc).toBeCalledWith("database", "players", playerId);
   });
 
   it("calls getDoc with correct parameters", async () => {
     const { playerId } = setup();
-    await getName(playerId);
+    await getPlayerDoc(playerId);
     expect(getDoc).toBeCalledWith(`database/players/${playerId}`);
   });
 
-  it("returns correct name", async () => {
+  it("returns correct doc", async () => {
     const { playerId } = setup();
-    const name = await getName(playerId);
-    expect(name).toBe("Haunted Knight");
+    const recievedDoc = await getPlayerDoc(playerId);
+    expect(recievedDoc).toBe(returnedDoc);
   });
 });
 

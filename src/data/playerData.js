@@ -38,18 +38,18 @@ export async function computeScore(gameId, pendingId) {
   }
 }
 
-export async function getName(playerId) {
+export async function getPlayerDoc(playerId) {
   try {
     const playerDocRef = doc(db, "players", playerId);
     const playerDoc = await getDoc(playerDocRef);
-    return playerDoc.data().name;
+    return playerDoc;
   } catch (err) {
     console.log(err);
     return null;
   }
 }
 
-export async function setName(playerId, name) {
+export async function savePlayerName(playerId, name) {
   try {
     const playerDocRef = doc(db, "players", playerId);
     await setDoc(playerDocRef, {
@@ -69,15 +69,13 @@ export async function deletePending(gameId, pendingId) {
   }
 }
 
-export async function updatePlayerScore(gameId, playerId, pendingId) {
+export async function updatePlayerScore(gameId, playerId, name, score) {
   try {
-    const score = await computeScore(gameId, pendingId);
-    await deletePending(gameId, pendingId);
-    const name = await getName(playerId);
     await runTransaction(db, async (transaction) => {
       const playerScoreDocRef = doc(db, "games", gameId, "scores", playerId);
       const playerScoreDoc = await transaction.get(playerScoreDocRef);
       if (!playerScoreDoc.exists() || score < playerScoreDoc.data().score) {
+        console.log("HERE");
         transaction.set(playerScoreDocRef, {
           score,
           name,
@@ -85,6 +83,6 @@ export async function updatePlayerScore(gameId, playerId, pendingId) {
       }
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
