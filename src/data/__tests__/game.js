@@ -16,6 +16,7 @@ jest.mock("firebase/firestore", () => {
     }),
     getDoc: jest.fn(() => ({
       id: 1,
+      exists: () => true,
       data: () => {
         return {
           imageURL: "images/game.png",
@@ -50,6 +51,7 @@ describe("getGameData", () => {
     getDoc.mockImplementationOnce(() => {
       return {
         id: 50,
+        exists: () => true,
         data: () => {
           return {
             imageURL: "www.example.com",

@@ -1,0 +1,21 @@
+.game-image {
+  width: auto;
+  height: 300px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 16px;
+}
+
+.btn {
+  padding: 8px 16px;
+}
+
+.name-text {
+  font-size: 24px;
+}
