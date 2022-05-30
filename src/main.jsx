@@ -6,10 +6,25 @@ import App from "./App";
 import GameDisplay from "./components/GameDisplay/GameDisplay";
 import GameList from "./components/GameList/GameList";
 import Leaderboard from "./components/Leaderboard";
+import Header from "./components/Header";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route index element={<Header type={"leaderboard"} />} />
+          <Route path="game">
+            <Route index element={<Header type={"leaderboard"} />} />
+            <Route path=":gameId" element={<Header type={"leaderboard"} />} />
+          </Route>
+          <Route path="leaderboard">
+            <Route index element={<Header type={"home"} />} />
+            <Route path=":gameId" element={<Header type={"home"} />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<Header type={"home"} />} />
+      </Routes>
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<GameList buttonType="play" />} />
