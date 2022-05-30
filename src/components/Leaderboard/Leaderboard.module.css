@@ -1,0 +1,38 @@
+.score-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 75%;
+}
+
+.score-table td,
+.score-table th {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+}
+
+.score-table tr:nth-child(even) {
+  background-color: #cdd1d4;
+}
+
+.score-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #285898;
+  color: white;
+}
+
+.score-table-heading {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+#current-player-row {
+  background-color: #f4c587;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

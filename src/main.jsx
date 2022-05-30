@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import GameDisplay from "./components/GameDisplay/GameDisplay";
 import GameList from "./components/GameList/GameList";
+import Leaderboard from "./components/Leaderboard";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </Route>
           <Route path="leaderboard">
             <Route index element={<GameList buttonType="leaderboard" />} />
+            <Route path=":gameId" element={<Leaderboard />} />
           </Route>
         </Route>
         <Route path="*" element={<div>Page not found!</div>} />

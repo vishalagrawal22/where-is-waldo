@@ -39,14 +39,9 @@ export async function computeScore(gameId, pendingId) {
 }
 
 export async function getPlayerDoc(playerId) {
-  try {
-    const playerDocRef = doc(db, "players", playerId);
-    const playerDoc = await getDoc(playerDocRef);
-    return playerDoc;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
+  const playerDocRef = doc(db, "players", playerId);
+  const playerDoc = await getDoc(playerDocRef);
+  return playerDoc;
 }
 
 export async function savePlayerName(playerId, name) {
@@ -75,7 +70,6 @@ export async function updatePlayerScore(gameId, playerId, name, score) {
       const playerScoreDocRef = doc(db, "games", gameId, "scores", playerId);
       const playerScoreDoc = await transaction.get(playerScoreDocRef);
       if (!playerScoreDoc.exists() || score < playerScoreDoc.data().score) {
-        console.log("HERE");
         transaction.set(playerScoreDocRef, {
           score,
           name,
