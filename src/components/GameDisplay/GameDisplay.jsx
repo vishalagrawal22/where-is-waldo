@@ -92,9 +92,9 @@ function GameDisplay() {
   }
 
   if (isPending) {
-    return <div>loading...</div>;
+    return <div className={styles["fallback-text"]}>loading...</div>;
   } else if (error) {
-    return <div>{error}</div>;
+    return <div className={styles["fallback-text"]}>{error}</div>;
   } else {
     const leftCharacters = characters.filter(
       (character) => !foundCharacterIds.has(character.id)

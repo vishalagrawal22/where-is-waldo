@@ -14,3 +14,8 @@
   background-color: #fff;
   z-index: 3;
 }
+
+.fallback-text {
+  padding: 16px;
+  font-size: 24px;
+}
