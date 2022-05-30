@@ -12,7 +12,8 @@ function GameList({ buttonType }) {
       const games = await getAllGames();
       setGames(games);
     })();
-  });
+  }, []);
+
   return (
     <div className={styles["game-list"]}>
       {games.map((game) => (
