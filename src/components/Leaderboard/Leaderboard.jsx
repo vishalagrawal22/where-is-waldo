@@ -36,7 +36,7 @@ function Leaderboard() {
   }, [gameId, currentPlayer]);
 
   return (
-    <div>
+    <div className={styles["container"]}>
       {game && <GameCard game={game} buttonType="play" />}
       <div className={styles["table-container"]}>
         <div className={styles["score-table-heading"]}>Leaderboard</div>
