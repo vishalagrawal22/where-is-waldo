@@ -58,10 +58,13 @@ function EndScreen({ gameId, pendingId, player }) {
         </div>
 
         {name === null && (
-          <div>
-            <label htmlFor="playerName">Enter your name: </label>
+          <div className={styles["name-input-container"]}>
+            <label className={styles["name-input-label"]} htmlFor="playerName">
+              Name:{" "}
+            </label>
             <input
               type="text"
+              className={styles["name-input"]}
               value={formName}
               onChange={(event) => {
                 setFormName(event.target.value);
