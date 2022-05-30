@@ -22,7 +22,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path=":gameId" element={<Leaderboard />} />
           </Route>
         </Route>
-        <Route path="*" element={<div>Page not found!</div>} />
+        <Route
+          path="*"
+          element={
+            <div style={{ padding: "16px", fontSize: "24px" }}>
+              Error 404: page not found!
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
