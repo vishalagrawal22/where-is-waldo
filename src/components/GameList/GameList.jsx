@@ -16,9 +16,7 @@ function GameList({ buttonType }) {
   return (
     <div className={styles["game-list"]}>
       {games.map((game) => (
-        <>
-          <GameCard game={game} buttonType={buttonType} key={game.id} />
-        </>
+        <GameCard game={game} buttonType={buttonType} key={game.id} />
       ))}
     </div>
   );
