@@ -1,6 +1,5 @@
 .game-list {
-  height: 100%;
-  width: 100%;
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;

@@ -59,7 +59,7 @@ function ImageDisplay({
   }
 
   return (
-    <div style={{ height: "100%", position: "relative" }}>
+    <div style={{ position: "relative" }}>
       <ToastBox
         text={lastClickResult?.text}
         duration={TOAST_DURATION}
