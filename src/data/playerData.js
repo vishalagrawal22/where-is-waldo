@@ -6,16 +6,17 @@ import {
   setDoc,
   deleteDoc,
   runTransaction,
+  serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 export async function saveStartTime(gameId, playerId) {
   try {
     const pendingRef = collection(db, "games", gameId, "pending");
-    const startTime = new Date();
     const docRef = await addDoc(pendingRef, {
       playerId,
-      startTime,
+      startTime: serverTimestamp(),
     });
     return docRef.id;
   } catch (err) {
@@ -24,13 +25,24 @@ export async function saveStartTime(gameId, playerId) {
   }
 }
 
+export async function saveEndTime(gameId, pendingId) {
+  try {
+    const pendingDocRef = doc(db, "games", gameId, "pending", pendingId);
+    await updateDoc(pendingDocRef, {
+      endTime: serverTimestamp(),
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function computeScore(gameId, pendingId) {
   try {
     const pendingDocRef = doc(db, "games", gameId, "pending", pendingId);
     const pendingDoc = await getDoc(pendingDocRef);
     const startTime = pendingDoc.data().startTime.toDate();
-    const currentTime = Date.now();
-    const score = currentTime - startTime;
+    const endTime = pendingDoc.data().endTime.toDate();
+    const score = endTime - startTime;
     return score;
   } catch (err) {
     console.log(err);

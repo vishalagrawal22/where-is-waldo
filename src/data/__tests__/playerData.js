@@ -40,6 +40,7 @@ jest.mock("firebase/firestore", () => {
     addDoc: jest.fn(() => ({
       id: null,
     })),
+    serverTimestamp: jest.fn(() => new Date()),
     getDoc: jest.fn(),
     setDoc: jest.fn(),
     deleteDoc: jest.fn(),
@@ -82,15 +83,17 @@ describe("saveStartTime", () => {
 describe("computeScore", () => {
   beforeEach(() => {
     const startTime = 1000;
+    const endTime = 6000;
     getDoc.mockReturnValueOnce({
       data: () => ({
         startTime: {
           toDate: () => startTime,
         },
+        endTime: {
+          toDate: () => endTime,
+        },
       }),
     });
-
-    Date.now = jest.fn(() => 6000);
   });
 
   it("creates doc ref with correct arguments", async () => {

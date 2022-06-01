@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  computeScore,
-  deletePending,
   getPlayerDoc,
   savePlayerName,
   updatePlayerScore,
@@ -12,19 +10,10 @@ import {
 import styles from "./EndScreen.module.css";
 import Overlay from "../Overlay";
 
-function EndScreen({ gameId, pendingId, player }) {
+function EndScreen({ score, gameId, player }) {
   const [name, setName] = useState(null);
-  const [score, setScore] = useState(null);
   const [formName, setFormName] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    (async function () {
-      const playerScore = await computeScore(gameId, pendingId);
-      await deletePending(gameId, pendingId);
-      setScore(playerScore);
-    })();
-  }, [gameId, pendingId]);
 
   useEffect(() => {
     (async function () {

@@ -14,7 +14,9 @@ service cloud.firestore {
     match /games/{gameId}/pending/{pendingId} {
       allow read: if request.auth.uid == resource.data.playerId;
       allow create: if request.auth.uid != null && request.auth.uid == request.resource.data.playerId 
-                    && request.resource.data.startTime is timestamp;
+                    && request.resource.data.startTime == request.time;
+      allow update: if request.auth.uid == resource.data.playerId  && 
+                      request.resource.data.startTime == resource.data.startTime && request.resource.data.endTime == request.time;
       allow delete: if request.auth.uid == resource.data.playerId;
     }
 

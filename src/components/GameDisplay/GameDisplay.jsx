@@ -8,7 +8,12 @@ import EndScreen from "../EndScreen";
 import { createPlayer, usePlayer } from "../../auth/hook";
 import { getGameData } from "../../data/game";
 import { getCharacterLocation } from "../../data/location";
-import { saveStartTime } from "../../data/playerData";
+import {
+  saveStartTime,
+  computeScore,
+  deletePending,
+  saveEndTime,
+} from "../../data/playerData";
 
 import { liesInside } from "../../helpers/circle";
 
@@ -24,6 +29,7 @@ function GameDisplay() {
   const [characters, setCharacters] = useState(null);
   const [lastClickResult, setLastClickResult] = useState(null);
   const [foundCharacterIds, setFoundCharacterIds] = useState(new Set());
+  const [score, setScore] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -83,6 +89,13 @@ function GameDisplay() {
         text: `You found ${getCharacterName(characterId)}!`,
         type: "success",
       });
+
+      if (foundCharacterIds.size === characters.length - 1) {
+        await saveEndTime(gameId, pendingId);
+        const score = await computeScore(gameId, pendingId);
+        await deletePending(gameId, pendingId);
+        setScore(score);
+      }
     } else {
       setLastClickResult({
         text: `Try Again`,
@@ -106,9 +119,7 @@ function GameDisplay() {
     };
     return (
       <>
-        {characters.length === foundCharacterIds.size && (
-          <EndScreen pendingId={pendingId} gameId={gameId} player={player} />
-        )}
+        {score && <EndScreen score={score} gameId={gameId} player={player} />}
         <div className={`${styles["character-cards"]}`}>
           {characters.map((character) => (
             <CharacterCard
